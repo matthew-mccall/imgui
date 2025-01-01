@@ -330,6 +330,7 @@ static ImGuiViewport* ImGui_ImplSDL3_GetViewportForWindowID(SDL_WindowID window_
 bool ImGui_ImplSDL3_ProcessEvent(const SDL_Event* event)
 {
     ImGui_ImplSDL3_Data* bd = ImGui_ImplSDL3_GetBackendData();
+    float windowScale = SDL_GetWindowDisplayScale(bd->Window);
     IM_ASSERT(bd != nullptr && "Context or backend not initialized! Did you call ImGui_ImplSDL3_Init()?");
     ImGuiIO& io = ImGui::GetIO();
 
@@ -348,7 +349,7 @@ bool ImGui_ImplSDL3_ProcessEvent(const SDL_Event* event)
                 mouse_pos.y += window_y;
             }
             io.AddMouseSourceEvent(event->motion.which == SDL_TOUCH_MOUSEID ? ImGuiMouseSource_TouchScreen : ImGuiMouseSource_Mouse);
-            io.AddMousePosEvent(mouse_pos.x, mouse_pos.y);
+            io.AddMousePosEvent(mouse_pos.x * windowScale, mouse_pos.y * windowScale);
             return true;
         }
         case SDL_EVENT_MOUSE_WHEEL:
@@ -610,6 +611,8 @@ static void ImGui_ImplSDL3_CloseGamepads();
 void ImGui_ImplSDL3_Shutdown()
 {
     ImGui_ImplSDL3_Data* bd = ImGui_ImplSDL3_GetBackendData();
+    float windowScale = SDL_GetWindowDisplayScale(bd->Window);
+
     IM_ASSERT(bd != nullptr && "No platform backend to shutdown, or already shutdown?");
     ImGuiIO& io = ImGui::GetIO();
 
@@ -631,6 +634,7 @@ void ImGui_ImplSDL3_Shutdown()
 static void ImGui_ImplSDL3_UpdateMouseData()
 {
     ImGui_ImplSDL3_Data* bd = ImGui_ImplSDL3_GetBackendData();
+    float windowScale = SDL_GetWindowDisplayScale(bd->Window);
     ImGuiIO& io = ImGui::GetIO();
 
     // We forward mouse input when hovered or captured (via SDL_EVENT_MOUSE_MOTION) or when focused (below)
@@ -670,7 +674,7 @@ static void ImGui_ImplSDL3_UpdateMouseData()
                 mouse_x -= window_x;
                 mouse_y -= window_y;
             }
-            io.AddMousePosEvent((float)mouse_x, (float)mouse_y);
+            io.AddMousePosEvent((float)mouse_x * windowScale, (float)mouse_y * windowScale);
         }
     }
 
@@ -857,6 +861,8 @@ static void ImGui_ImplSDL3_UpdateMonitors()
 void ImGui_ImplSDL3_NewFrame()
 {
     ImGui_ImplSDL3_Data* bd = ImGui_ImplSDL3_GetBackendData();
+    float windowScale = SDL_GetWindowDisplayScale(bd->Window);
+
     IM_ASSERT(bd != nullptr && "Context or backend not initialized! Did you call ImGui_ImplSDL3_Init()?");
     ImGuiIO& io = ImGui::GetIO();
 
@@ -888,7 +894,7 @@ void ImGui_ImplSDL3_NewFrame()
     {
         bd->MouseWindowID = 0;
         bd->MousePendingLeaveFrame = 0;
-        io.AddMousePosEvent(-FLT_MAX, -FLT_MAX);
+        io.AddMousePosEvent(-FLT_MAX * windowScale, -FLT_MAX * windowScale);
     }
 
     // Our io.AddMouseViewportEvent() calls will only be valid when not capturing.
