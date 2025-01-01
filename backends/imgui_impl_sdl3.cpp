@@ -867,7 +867,7 @@ void ImGui_ImplSDL3_NewFrame()
     if (SDL_GetWindowFlags(bd->Window) & SDL_WINDOW_MINIMIZED)
         w = h = 0;
     SDL_GetWindowSizeInPixels(bd->Window, &display_w, &display_h);
-    io.DisplaySize = ImVec2(static_cast<float>(display_w), static_cast<float>(h));
+    io.DisplaySize = ImVec2(static_cast<float>(display_w), static_cast<float>(display_h));
     if (w > 0 && h > 0)
         io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
 
