@@ -1,4 +1,5 @@
 Dear ImGui
+=====
 
 > [!NOTE]
 > This fork is dedicated to staying up-to-date with the official Dear ImGui repository while introducing additional features and improvements, including:
@@ -7,8 +8,6 @@ Dear ImGui
 > - Fixes for DPI scaling issues on macOS, ensuring better support for high-resolution displays.
 >
 > Our goal is to maintain compatibility with the upstream project while addressing platform-specific enhancements and feature requests.
-
-=====
 
 <center><b><i>"Give someone state and they'll have a bug one day, but teach them how to represent state in two separate locations that have to be kept in sync and they'll have bugs for a lifetime."</i></b></center> <a href="https://twitter.com/rygorous/status/1507178315886444544">-ryg</a>
 
